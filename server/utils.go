@@ -20,7 +20,7 @@ func fileIsExists(fn string) (bool, error) {
 	return true, nil
 }
 func makeSessionToken() string {
-	s := fmt.Sprintf("%d", time.Now().Unix())
+	s := fmt.Sprintf("%d%s", time.Now().Unix(), time.Now())
 	sum := sha256.Sum256([]byte(s))
 	return hex.EncodeToString(sum[:])
 }
@@ -65,5 +65,5 @@ func ParseArguments(args []string) (size int, port, token string, noAuth bool) {
 	return
 }
 func ArgumentsGuide() string {
-	return "Sharer [ client | server ] \n Server:\n  - (-port | -p) port to listen (default 9000) \n  - (-size | -s) size (MB) allow to recieve per request (default 20MB)\n  - (-token | -t) token to allow client share to you (optional)\n  - (-unsecure | -u) to not use token and allow everyone share to you\n  - example: 'sharer server -p 4000 -s 30 -t mycustomtoken"
+	return "Server:\n  - (-port | -p) port to listen (default 9000) \n  - (-size | -s) size (MB) allow to recieve per request (default 20MB)\n  - (-token | -t) token to allow client share to you (optional)\n  - (-unsecure | -u) to not use token and allow everyone share to you\n  - example: 'sharer server -p 4000 -s 30 -t mycustomtoken`\n"
 }

@@ -10,11 +10,10 @@ import (
 )
 
 func main() {
-
 	args := os.Args
 	if len(args) < 2 {
 		fmt.Println("Not Enought Arguments")
-		fmt.Println(client.ArgumentsGuide() + server.ArgumentsGuide())
+		fmt.Print("Sharer [ client | server ]\n" + client.ArgumentsGuide() + server.ArgumentsGuide())
 		return
 	}
 	switch args[1] {

@@ -1,8 +1,8 @@
 package client
 
 import (
-	"fmt"
 	"log"
+	"log/slog"
 )
 
 func ParseArguments(args []string) (file, address, token string) {
@@ -30,7 +30,7 @@ func ParseArguments(args []string) (file, address, token string) {
 		}
 	}
 	if token == "" {
-		fmt.Println("You didnt set token, continuing anyway")
+		slog.Info("You didnt set token, continuing anyway")
 	}
 	if address == "" {
 		log.Fatalf("missing address ( -addr | -a )")
@@ -41,5 +41,5 @@ func ParseArguments(args []string) (file, address, token string) {
 	return
 }
 func ArgumentsGuide() string {
-	return "Sharer [ client | server ] \n Client:\n  - (-file | -f) path to file|folder\n  - (-addr | -a) set address to send\n  - (-token | -t) set token to authenticate with server (optional)\n  - example: 'sharer client -f myfile.txt -a 127.0.0.1:9000 -t myauthtoken"
+	return "Client:\n  - (-file | -f) path to file|folder\n  - (-addr | -a) set address to send\n  - (-token | -t) set token to authenticate with server (optional)\n  - example: 'sharer client -f myfile.txt -a 127.0.0.1:9000 -t myauthtoken`\n"
 }

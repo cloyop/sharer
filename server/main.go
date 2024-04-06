@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"log"
 	"net"
 
@@ -26,9 +27,9 @@ func RecieveHandler(size int, port, token string, noAuth bool) {
 	}
 	s := grpc.NewServer(grpc.MaxRecvMsgSize(size), grpc.MaxSendMsgSize(size))
 	pb.RegisterShareServer(s, srv)
-	log.Printf("server listening at port :%v", port)
+	fmt.Printf("server running at port :%v", port)
 	if !noAuth {
-		log.Printf("Clients will need authenticate with the following Token: \n  %v \n", token)
+		fmt.Printf("Clients will need authenticate with the following Token: %v\n", token)
 	}
 	if err := s.Serve(ln); err != nil {
 		log.Fatal(err)

@@ -46,7 +46,7 @@ func mustCreateFile(fn *string) (*os.File, error) {
 	}
 	if exist {
 		nn := fmt.Sprintf("%d%v", rand.Intn(15), *fn)
-		log.Printf("File %v exists, creating it as %v", *fn, nn)
+		fmt.Printf("File %v exists, creating it as %v", *fn, nn)
 		*fn = nn
 	}
 	f, err := os.Create(*fn)

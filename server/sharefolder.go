@@ -49,7 +49,7 @@ func mustCreateFolder(folderName *string) error {
 		return err
 	}
 	if exist {
-		nn := fmt.Sprintf("%v%d", *folderName, rand.Intn(5))
+		nn := fmt.Sprintf("%v%d", *folderName, rand.Intn(15))
 		log.Printf("File %v exists, creating it as %v", *folderName, nn)
 		*folderName = nn
 	}

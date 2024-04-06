@@ -1,3 +1,0 @@
-better Logs
-better error handling
-write tests

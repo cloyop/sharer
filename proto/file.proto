@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package proto;
+option go_package = "github.com/cloyop/sharer/proto";
+
+service Share{
+  rpc ShareFolder(ShareFolderRequest) returns (ShareResponse){}
+  rpc ShareFile(ShareFileRequest) returns (ShareResponse){}
+}
+message ShareFileRequest {
+  File file = 1;
+}
+message ShareFolderRequest {
+  Folder folder = 1;
+}
+message ShareResponse {
+  string message = 1;
+  bool Success =2;
+  int64 bytesShared = 3;
+}
+message Folder {
+  string name = 1;
+  repeated File files = 2;
+  repeated Folder folders = 3 ;
+  uint64 Size =4;
+  }
+
+message File {
+  string type = 1;
+  bytes payload = 2;
+  string name = 3;
+}

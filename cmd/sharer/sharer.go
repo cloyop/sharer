@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -12,22 +13,20 @@ func main() {
 
 	args := os.Args
 	if len(args) < 2 {
-		//Print Guide
-		log.Fatal("not Enough arguments")
+		fmt.Println("Not Enought Arguments")
+		fmt.Println(client.ArgumentsGuide() + server.ArgumentsGuide())
+		return
 	}
 	switch args[1] {
 	case "server":
-		server.RecieveHandler(args[2:])
+		server.RecieveHandler(server.ParseArguments(args[2:]))
 		return
 	case "client":
-		client.SharerHandler(args[2:])
-		return
-	case "config":
-		// ToDo
+		client.SharerHandler(client.ParseArguments(args[2:]))
 		return
 	default:
-		// PrintGuide
-		log.Fatalf("invalid mode %v", args[1])
+		log.Fatalf("invalid Argument %v", args[1])
+		fmt.Println(client.ArgumentsGuide() + server.ArgumentsGuide())
 	}
 
 }

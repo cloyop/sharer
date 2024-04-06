@@ -9,9 +9,11 @@ service Share{
 }
 message ShareFileRequest {
   File file = 1;
+  string token = 2;
 }
 message ShareFolderRequest {
   Folder folder = 1;
+  string token = 2;
 }
 message ShareResponse {
   string message = 1;

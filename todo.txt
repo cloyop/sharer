@@ -1,5 +1,3 @@
-auth Method
-parse cli args
 better Logs
 better error handling
 write tests

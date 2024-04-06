@@ -13,27 +13,19 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-func SharerHandler(args []string) {
-	// need token to auth
-	// address to dial
-	// file | folder path
-	// processArgs
-	filePath := ""
-	address := ""
-
+func SharerHandler(filePath, address, token string) {
 	filePath = strings.TrimRight(filePath, "/")
 	fInfo, err := os.Stat(filePath)
 	if err != nil {
 		log.Fatal(err)
 	}
 	if fInfo.IsDir() {
-		shareFolder(&pb.ShareFolderRequest{Folder: makeShareFolder(filePath)}, address)
+		shareFolder(&pb.ShareFolderRequest{Token: token, Folder: makeShareFolder(filePath)}, address)
 	} else {
-		shareFile(&pb.ShareFileRequest{File: makeShareFile(filePath)}, address)
+		shareFile(&pb.ShareFileRequest{Token: token, File: makeShareFile(filePath)}, address)
 	}
 }
 func mustDial(addr string) (*grpc.ClientConn, context.Context, context.CancelFunc) {
-	// grpc auth
 	conn, err := grpc.NewClient(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("Could not Dial: %v", err)

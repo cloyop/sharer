@@ -12,6 +12,11 @@ import (
 )
 
 func (s *Server) ShareFolder(ctx context.Context, in *pb.ShareFolderRequest) (*pb.ShareResponse, error) {
+	if s.AuthRequired {
+		if s.AuthToken != in.Token {
+			return &pb.ShareResponse{Message: "Token Invalid"}, nil
+		}
+	}
 	p, _ := peer.FromContext(ctx)
 	folder := in.GetFolder()
 	log.Printf("Share request from %v. Folder: %v of %d bytes\n", p.Addr, folder.Name, folder.Size)
@@ -46,7 +51,7 @@ func mustCreateFolder(folderName *string) error {
 	if exist {
 		nn := fmt.Sprintf("%v%d", *folderName, rand.Intn(5))
 		log.Printf("File %v exists, creating it as %v", *folderName, nn)
-		folderName = &nn
+		*folderName = nn
 	}
 	if err = os.Mkdir(*folderName, os.ModePerm); err != nil {
 		return err

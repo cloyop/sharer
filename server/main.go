@@ -10,27 +10,26 @@ import (
 
 type Server struct {
 	pb.UnimplementedShareServer
+	AuthRequired bool
+	AuthToken    string
 }
 
-func RecieveHandler(args []string) {
-	// size (optional) - default 20mb
-	// port (optional) - default 9000
-	// Process args
-	port := "9000"
-	sizeInt := 20 * 1_000_000
-	strToken := makeSessionToken()
-	OpenToReceive(strToken, port, sizeInt)
-}
-
-func OpenToReceive(token, port string, size int) {
+func RecieveHandler(size int, port, token string, noAuth bool) {
+	srv := &Server{}
+	if !noAuth {
+		srv.AuthRequired = true
+		srv.AuthToken = token
+	}
 	ln, err := net.Listen("tcp", ":"+port)
 	if err != nil {
 		log.Fatal(err)
 	}
 	s := grpc.NewServer(grpc.MaxRecvMsgSize(size), grpc.MaxSendMsgSize(size))
-	pb.RegisterShareServer(s, &Server{})
+	pb.RegisterShareServer(s, srv)
 	log.Printf("server listening at port :%v", port)
-	log.Printf("Clients will need authenticate with the following Token: \n  %v \n", token)
+	if !noAuth {
+		log.Printf("Clients will need authenticate with the following Token: \n  %v \n", token)
+	}
 	if err := s.Serve(ln); err != nil {
 		log.Fatal(err)
 	}

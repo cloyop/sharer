@@ -12,6 +12,11 @@ import (
 )
 
 func (s *Server) ShareFile(ctx context.Context, in *pb.ShareFileRequest) (*pb.ShareResponse, error) {
+	if s.AuthRequired {
+		if s.AuthToken != in.Token {
+			return &pb.ShareResponse{Message: "Token Invalid"}, nil
+		}
+	}
 	p, _ := peer.FromContext(ctx)
 	file := in.GetFile()
 	log.Printf("Share request from %v. File: %v of %d bytes\n", p.Addr, file.Name, len(file.Payload))
@@ -40,9 +45,9 @@ func mustCreateFile(fn *string) (*os.File, error) {
 		return nil, err
 	}
 	if exist {
-		nn := fmt.Sprintf("%v%d", *fn, rand.Intn(5))
+		nn := fmt.Sprintf("%d%v", rand.Intn(15), *fn)
 		log.Printf("File %v exists, creating it as %v", *fn, nn)
-		fn = &nn
+		*fn = nn
 	}
 	f, err := os.Create(*fn)
 	if err != nil {

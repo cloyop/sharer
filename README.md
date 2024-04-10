@@ -2,6 +2,8 @@
 
 ## Easy way to share files without need a middle man
 
+### Not fully baked
+
 ### Advantages
 
 * No Middle Man

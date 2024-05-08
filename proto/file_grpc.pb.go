@@ -22,8 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ShareClient interface {
-	ShareFolder(ctx context.Context, in *ShareFolderRequest, opts ...grpc.CallOption) (*ShareResponse, error)
-	ShareFile(ctx context.Context, in *ShareFileRequest, opts ...grpc.CallOption) (*ShareResponse, error)
+	Share(ctx context.Context, in *ShareRequest, opts ...grpc.CallOption) (*ShareResponse, error)
 }
 
 type shareClient struct {
@@ -34,18 +33,9 @@ func NewShareClient(cc grpc.ClientConnInterface) ShareClient {
 	return &shareClient{cc}
 }
 
-func (c *shareClient) ShareFolder(ctx context.Context, in *ShareFolderRequest, opts ...grpc.CallOption) (*ShareResponse, error) {
+func (c *shareClient) Share(ctx context.Context, in *ShareRequest, opts ...grpc.CallOption) (*ShareResponse, error) {
 	out := new(ShareResponse)
-	err := c.cc.Invoke(ctx, "/proto.Share/ShareFolder", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *shareClient) ShareFile(ctx context.Context, in *ShareFileRequest, opts ...grpc.CallOption) (*ShareResponse, error) {
-	out := new(ShareResponse)
-	err := c.cc.Invoke(ctx, "/proto.Share/ShareFile", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.Share/Share", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -56,8 +46,7 @@ func (c *shareClient) ShareFile(ctx context.Context, in *ShareFileRequest, opts 
 // All implementations must embed UnimplementedShareServer
 // for forward compatibility
 type ShareServer interface {
-	ShareFolder(context.Context, *ShareFolderRequest) (*ShareResponse, error)
-	ShareFile(context.Context, *ShareFileRequest) (*ShareResponse, error)
+	Share(context.Context, *ShareRequest) (*ShareResponse, error)
 	mustEmbedUnimplementedShareServer()
 }
 
@@ -65,11 +54,8 @@ type ShareServer interface {
 type UnimplementedShareServer struct {
 }
 
-func (UnimplementedShareServer) ShareFolder(context.Context, *ShareFolderRequest) (*ShareResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ShareFolder not implemented")
-}
-func (UnimplementedShareServer) ShareFile(context.Context, *ShareFileRequest) (*ShareResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ShareFile not implemented")
+func (UnimplementedShareServer) Share(context.Context, *ShareRequest) (*ShareResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Share not implemented")
 }
 func (UnimplementedShareServer) mustEmbedUnimplementedShareServer() {}
 
@@ -84,38 +70,20 @@ func RegisterShareServer(s grpc.ServiceRegistrar, srv ShareServer) {
 	s.RegisterService(&Share_ServiceDesc, srv)
 }
 
-func _Share_ShareFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ShareFolderRequest)
+func _Share_Share_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ShareRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ShareServer).ShareFolder(ctx, in)
+		return srv.(ShareServer).Share(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.Share/ShareFolder",
+		FullMethod: "/proto.Share/Share",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShareServer).ShareFolder(ctx, req.(*ShareFolderRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Share_ShareFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ShareFileRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ShareServer).ShareFile(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/proto.Share/ShareFile",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShareServer).ShareFile(ctx, req.(*ShareFileRequest))
+		return srv.(ShareServer).Share(ctx, req.(*ShareRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -128,12 +96,8 @@ var Share_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*ShareServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "ShareFolder",
-			Handler:    _Share_ShareFolder_Handler,
-		},
-		{
-			MethodName: "ShareFile",
-			Handler:    _Share_ShareFile_Handler,
+			MethodName: "Share",
+			Handler:    _Share_Share_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

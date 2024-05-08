@@ -1,32 +1,24 @@
-# Sharer
+# GoSharer 
+## Very small desktop app to share files and folders with everyone u want without a middle man.
 
-## Easy way to share files without need a middle man
-
-### Not fully baked
-
-### Advantages
-
-* No Middle Man
-
-* No share limit, 20 MB by default that can be modified
-
-* The information is transmitted in binary so it is very fast
-
-* Directly from the CLI which is quite convenient
+* ### Use the benefits of using GRPC as transport. 
+* ### All data travels encrypted direct to the receiver. 
+* ### Max 50 GB per request.
 ---
-### Sharer [ client | server ]
+### Will need a GCC -> [Pre Requisites](https://docs.fyne.io/started/)
+### 
+### To allow you recieve outside request will need port-forwading your router.
+---
+* Select what need to do.
+![This is JavaScript](images/sh1.png)
 
-## Flags
-## share server
-  - ### ( -port -p ) port to listen (default 9000). 
-  - ### ( -size | -s ) size (MB) allow to recieve per request (default 20MB).
-  - ### ( -token | -t ) token to allow client share to you (optional).
-  - ### ( -unsecure | -u ) to not use token and allow everyone share to you. 
-        sharer server -p 4000 -s 30 -t mycustomtoken
-
-## share client
-  - ### ( -file | -f ) path to file|folder  
-  - ### ( -addr | -a ) set address to send\n  
-  - ### ( -token | -t ) set token to authenticate with server (optional) 
-        sharer client -f myfile.txt -a 127.0.0.1:9000 -t myauthtoken
-
+* To share just need address & token.  
+![This is JavaScript](images/sh2.png)
+* To receive just need select a drop location, the token is auto generate but can use your own custom token too.
+* By default the max size of incoming request is set to 20MB. Can be modified with a number in MB or GB.
+![This is JavaScript](images/sh3.png)
+![This is JavaScript](images/sh4.png)
+![This is JavaScript](images/sh5.png)
+![This is JavaScript](images/sh6.png)
+![This is JavaScript](images/sh7.png)
+---

@@ -9,8 +9,8 @@
 ### 
 ### To allow you recieve outside request will need port-forwading your router.
 ---
-* Select what need to do.
-![This is JavaScript](images/sh1.png)
+* Select what need to do.    
+![This is JavaScript](images/sh1.png)    
 * To share just need address & token.  
 ![This is JavaScript](images/sh2.png)
 * To receive just need select a drop location, the token is auto generate but can use your own custom token too.
